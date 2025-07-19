@@ -1,0 +1,171 @@
+name: Build temp-c-raylib
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Create a new release'
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev
+    
+    - name: Install Dyalog APL
+      run: |
+        # Download Dyalog APL for Linux
+        curl -L "https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=19.0/linux_64_19.0.50027_unicode.x86_64.deb" -o dyalog.deb
+        sudo apt-get install -y ./dyalog.deb
+
+    - name: Build raylib
+      run: |
+        chmod +x runNewMakeRaylib.bash
+        ./runNewMakeRaylib.bash
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-build
+        path: |
+          libtemp-c-raylib.so
+          raylib-5.5/
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install dependencies
+      run: |
+        # macOS should have the necessary frameworks built-in
+        echo "macOS dependencies check"
+    
+    - name: Install Dyalog APL
+      run: |
+        # Detect architecture
+        if [[ $(uname -m) == "arm64" ]]; then
+          DYALOG_URL="https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=19.0/macarm_64_19.0.50027_unicode.pkg"
+        else
+          DYALOG_URL="https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=19.0/mac_64_19.0.50027_unicode.pkg"
+        fi
+        
+        # Download and install Dyalog APL
+        curl -L "$DYALOG_URL" -o dyalog.pkg
+        sudo installer -pkg dyalog.pkg -target /
+    
+    - name: Build raylib
+      run: |
+        chmod +x runNewMakeRaylibMac.bash
+        ./runNewMakeRaylibMac.bash
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: macos-build
+        path: |
+          libtemp-c-raylib.dylib
+          raylib-5.5/
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+  
+    
+    - name: Install Zig
+      uses: goto-bus-stop/setup-zig@v2
+      with:
+        version: 0.11.0
+    
+    - name: Install dependencies
+      run: |
+        # Windows dependencies should be available through zig
+        echo "Windows dependencies check"
+    
+    - name: Install Dyalog APL
+      run: |
+        REM Download Dyalog APL for Windows
+        curl https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=19.0/windows_64_19.0.50074_unicode.zip -o dyalog.zip
+        
+        REM Create directory and extract the archive
+        mkdir dyalog
+        tar -xf dyalog.zip -C .\dyalog
+        dir dyalog
+        cd dyalog
+        
+        REM Install Visual C++ Redistributable
+        vc_redist.x64.exe /quiet /norestart
+        
+        REM Install Dyalog APL
+        msiexec /i setup_64_unicode.msi /quiet /norestart ACCEPT_LICENSE=YES
+
+        REM Fix dyalogscript.ps1 (remove last 2 lines)
+        powershell -c "Get-Content 'C:\Program Files\Dyalog\Dyalog APL-64 19.0 Unicode\scriptbin\dyalogscript.ps1' | Select-Object -SkipLast 2 | Set-Content 'C:\Program Files\Dyalog\Dyalog APL-64 19.0 Unicode\scriptbin\dyalogscript2.ps1'"
+      shell: cmd
+    
+    - name: Build raylib
+      run: |
+        .\runNewMakeRaylib.ps1 -GHDyalog
+      shell: powershell
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-build
+        path: |
+          temp-c-raylib.dll
+          raylib-5.5/
+
+  create-release:
+    needs: [build-linux, build-macos, build-windows]
+    runs-on: ubuntu-latest
+    if: github.event.inputs.create_release == 'true'
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Read version from VERSION file
+      id: version
+      run: |
+        if [ -f "VERSION" ]; then
+          VERSION=$(cat VERSION | tr -d '\n\r')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version found: $VERSION"
+        else
+          echo "VERSION file not found!"
+          exit 1
+        fi
+    
+    - name: Create and push tag
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git tag -a "v${{ steps.version.outputs.version }}" -m "Release v${{ steps.version.outputs.version }}"
+        git push origin "v${{ steps.version.outputs.version }}"
+    
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: "v${{ steps.version.outputs.version }}"
+        name: "Release v${{ steps.version.outputs.version }}"
+        files: |
+          linux-build/libtemp-c-raylib.so
+          macos-build/libtemp-c-raylib.dylib
+          windows-build/temp-c-raylib.dll
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

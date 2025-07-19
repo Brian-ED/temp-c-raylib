@@ -1,3 +1,7 @@
+param(
+    [switch]$GHDyalog = $false
+)
+
 if (!((Test-Path "raylib-source.zip") -or (Test-Path "raylib-5.5"))) {
   Write-Output "Downloading raylib-source.zip"
   $ProgressPreference = 'SilentlyContinue'
@@ -9,15 +13,21 @@ if (!(Test-Path "raylib-5.5")) {
   tar -xf "raylib-source.zip" -o "raylib-5.5"
 }
 
-cd src
-# Assumes dyalog is installed
-./convert_pointerArgs.apls
-cd ..
+if (!$GHDyalog) {
+  cd src
+  # Assumes dyalog is installed
+  .\convert_pointerArgs.apls
+  cd ..
+} else {
+  cd src
+  & "C:\Program Files\Dyalog\Dyalog APL-64 19.0 Unicode\scriptbin\dyalogscript2.ps1" .\convert_pointerArgs.apls
+  cd ..
+}
 
 cd raylib-5.5/src
 make clean
 Add-Content -Path "rcore.c" -Value '#include "../../src/temp-c-raylib.c"'
-make CC="zig cc -target x86_64-windows" RAYLIB_LIBTYPE=SHARED -Erroraction # -Erroraction disables error messages, Since this erroring is intentional.
+make CC="zig cc -target x86_64-windows" RAYLIB_LIBTYPE=SHARED -s # -Erroraction disables error messages, Since this erroring is intentional.
 
 # Sadly I am copying files, i don't understand why the linker wants .o files and make produces .obj
 Copy-Item -Path "rcore.obj" -Destination "rcore.o"
