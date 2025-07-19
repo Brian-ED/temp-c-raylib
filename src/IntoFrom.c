@@ -3,7 +3,7 @@
 #endif
 #define DECLARE(x) RLAPI x; x
 
-/* typedef struct Vector2 {
+/*typedef struct Vector2 {
   float x;
   float y;
 } Vector2; */
@@ -23,7 +23,7 @@ DECLARE(void Vector2FROM(
 }
 
 
-/* typedef struct Vector3 {
+/*typedef struct Vector3 {
   float x;
   float y;
   float z;
@@ -48,7 +48,7 @@ DECLARE(void Vector3FROM(
 }
 
 
-/* typedef struct Vector4 {
+/*typedef struct Vector4 {
   float x;
   float y;
   float z;
@@ -78,7 +78,7 @@ DECLARE(void Vector4FROM(
 }
 
 
-/* typedef struct Matrix {
+/*typedef struct Matrix {
   float m0, m4, m8, m12;
   float m1, m5, m9, m13;
   float m2, m6, m10, m14;
@@ -108,7 +108,7 @@ DECLARE(void MatrixINTO(
 }
 
 
-/* typedef struct Color {
+/*typedef struct Color {
   unsigned char r;
   unsigned char g;
   unsigned char b;
@@ -138,7 +138,7 @@ DECLARE(void ColorFROM(
 }
 
 
-/* typedef struct Rectangle {
+/*typedef struct Rectangle {
   float x;
   float y;
   float width;
@@ -168,7 +168,7 @@ DECLARE(void RectangleFROM(
 }
 
 
-/* typedef struct Image {
+/*typedef struct Image {
   void *data;
   int width;
   int height;
@@ -203,7 +203,7 @@ DECLARE(void ImageFROM(
 }
 
 
-/* typedef struct Texture {
+/*typedef struct Texture {
   unsigned int id;
   int width;
   int height;
@@ -238,7 +238,7 @@ DECLARE(void TextureFROM(
 }
 
 
-/* typedef struct RenderTexture {
+/*typedef struct RenderTexture {
   unsigned int id;
   Texture texture;
   Texture depth;
@@ -264,7 +264,7 @@ DECLARE(void RenderTextureFROM(
 }
 
 
-/* typedef struct NPatchInfo {
+/*typedef struct NPatchInfo {
   Rectangle source;
   int left;
   int top;
@@ -304,7 +304,7 @@ DECLARE(void NPatchInfoFROM(
 }
 
 
-/* typedef struct GlyphInfo {
+/*typedef struct GlyphInfo {
   int value;
   int offsetX;
   int offsetY;
@@ -339,7 +339,7 @@ DECLARE(void GlyphInfoFROM(
 }
 
 
-/* typedef struct Font {
+/*typedef struct Font {
   int baseSize;
   int glyphCount;
   int glyphPadding;
@@ -379,7 +379,7 @@ DECLARE(void FontFROM(
 }
 
 
-/* typedef struct Camera3D {
+/*typedef struct Camera3D {
   Vector3 position;
   Vector3 target;
   Vector3 up;
@@ -414,7 +414,7 @@ DECLARE(void Camera3DFROM(
 }
 
 
-/* typedef struct Camera2D {
+/*typedef struct Camera2D {
   Vector2 offset;
   Vector2 target;
   float rotation;
@@ -444,7 +444,7 @@ DECLARE(void Camera2DFROM(
 }
 
 
-/* typedef struct Mesh {
+/*typedef struct Mesh {
   int vertexCount;
   int triangleCount;
   float *vertices;
@@ -539,7 +539,7 @@ DECLARE(void MeshFROM(
 }
 
 
-/* typedef struct Shader {
+/*typedef struct Shader {
   unsigned int id;
   int *locs;
 } Shader; */
@@ -559,7 +559,7 @@ DECLARE(void ShaderFROM(
 }
 
 
-/* typedef struct MaterialMap {
+/*typedef struct MaterialMap {
   Texture2D texture;
   Color color;
   float value;
@@ -584,7 +584,7 @@ DECLARE(void MaterialMapFROM(
 }
 
 
-/* typedef struct Material {
+/*typedef struct Material {
   Shader shader;
   MaterialMap *maps;
   float params[4];
@@ -609,7 +609,7 @@ DECLARE(void MaterialFROM(
 }
 
 
-/* typedef struct Transform {
+/*typedef struct Transform {
   Vector3 translation;
   Quaternion rotation;
   Vector3 scale;
@@ -634,7 +634,7 @@ DECLARE(void TransformFROM(
 }
 
 
-/* typedef struct BoneInfo {
+/*typedef struct BoneInfo {
   char name[32];
   int parent;
 } BoneInfo; */
@@ -654,7 +654,7 @@ DECLARE(void BoneInfoFROM(
 }
 
 
-/* typedef struct Model {
+/*typedef struct Model {
   Matrix transform;
   int meshCount;
   int materialCount;
@@ -709,7 +709,7 @@ DECLARE(void ModelFROM(
 }
 
 
-/* typedef struct ModelAnimation {
+/*typedef struct ModelAnimation {
   int boneCount;
   int frameCount;
   BoneInfo *bones;
@@ -745,7 +745,7 @@ DECLARE(void ModelAnimationFROM(
 }
 
 
-/* typedef struct Ray {
+/*typedef struct Ray {
   Vector3 position;
   Vector3 direction;
 } Ray; */
@@ -765,7 +765,7 @@ DECLARE(void RayFROM(
 }
 
 
-/* typedef struct RayCollision {
+/*typedef struct RayCollision {
   bool hit;
   float distance;
   Vector3 point;
@@ -795,7 +795,7 @@ DECLARE(void RayCollisionFROM(
 }
 
 
-/* typedef struct BoundingBox {
+/*typedef struct BoundingBox {
   Vector3 min;
   Vector3 max;
 } BoundingBox; */
@@ -815,7 +815,7 @@ DECLARE(void BoundingBoxFROM(
 }
 
 
-/* typedef struct Wave {
+/*typedef struct Wave {
   unsigned int frameCount;
   unsigned int sampleRate;
   unsigned int sampleSize;
@@ -850,7 +850,7 @@ DECLARE(void WaveFROM(
 }
 
 
-/* typedef struct AudioStream {
+/*typedef struct AudioStream {
   rAudioBuffer *buffer;
   rAudioProcessor *processor;
   unsigned int sampleRate;
@@ -885,7 +885,7 @@ DECLARE(void AudioStreamFROM(
 }
 
 
-/* typedef struct Sound {
+/*typedef struct Sound {
   AudioStream stream;
   unsigned int frameCount;
 } Sound; */
@@ -905,7 +905,7 @@ DECLARE(void SoundFROM(
 }
 
 
-/* typedef struct Music {
+/*typedef struct Music {
   AudioStream stream;
   unsigned int frameCount;
   bool looping;
@@ -940,7 +940,7 @@ DECLARE(void MusicFROM(
 }
 
 
-/* typedef struct VrDeviceInfo {
+/*typedef struct VrDeviceInfo {
   int hResolution;
   int vResolution;
   float hScreenSize;
@@ -995,7 +995,7 @@ DECLARE(void VrDeviceInfoFROM(
 }
 
 
-/* typedef struct VrStereoConfig {
+/*typedef struct VrStereoConfig {
   Matrix projection[2];
   Matrix viewOffset[2];
   float leftLensCenter[2];
@@ -1045,7 +1045,7 @@ DECLARE(void VrStereoConfigFROM(
 }
 
 
-/* typedef struct FilePathList {
+/*typedef struct FilePathList {
   unsigned int capacity;
   unsigned int count;
   char **paths;
@@ -1070,7 +1070,7 @@ DECLARE(void FilePathListFROM(
 }
 
 
-/* typedef struct AutomationEvent {
+/*typedef struct AutomationEvent {
   unsigned int frame;
   unsigned int type;
   int params[4];
@@ -1095,7 +1095,7 @@ DECLARE(void AutomationEventFROM(
 }
 
 
-/* typedef struct AutomationEventList {
+/*typedef struct AutomationEventList {
   unsigned int capacity;
   unsigned int count;
   AutomationEvent *events;
@@ -1120,13 +1120,396 @@ DECLARE(void AutomationEventListFROM(
 }
 
 
-DECLARE(void Float4INTO(
-  float *f4,
-  double *f8)){
-  *f4 = (float)(*f8);
+/*typedef struct rlVertexBuffer {
+  int elementCount;
+  float *vertices;
+  float *texcoords;
+  float *normals;
+  unsigned char *colors;
+  unsigned int *indices;
+  unsigned int vaoId;
+  unsigned int vboId[5];
+} rlVertexBuffer;*/
+DECLARE(void rlVertexBufferINTO(
+  rlVertexBuffer *R,
+  int *elementCount,
+  float **vertices,
+  float **texcoords,
+  float **normals,
+  unsigned char **colors,
+  unsigned int **indices,
+  unsigned int *vaoId,
+  unsigned int (*vboId)[4])){
+  R->elementCount = *elementCount;
+  R->vertices = *vertices;
+  R->texcoords = *texcoords;
+  R->normals = *normals;
+  R->colors = *colors;
+  R->indices = *indices;
+  R->vaoId = *vaoId;
+  for(int i=0;i<4;i++)R->vboId[i] = (*vboId)[i];
 }
-DECLARE(void Float4FROM(
-  float *f4,
-  double *f8)){
-  *f8 = (double)(*f4);
+DECLARE(void rlVertexBufferFROM(
+  rlVertexBuffer *R,
+  int *elementCount,
+  float **vertices,
+  float **texcoords,
+  float **normals,
+  unsigned char **colors,
+  unsigned int **indices,
+  unsigned int *vaoId,
+  unsigned int (*vboId)[4])){
+  *elementCount = R->elementCount;
+  *vertices = R->vertices;
+  *texcoords = R->texcoords;
+  *normals = R->normals;
+  *colors = R->colors;
+  *indices = R->indices;
+  *vaoId = R->vaoId;
+  for(int i=0;i<4;i++) (*vboId)[i] = R->vboId[i];
+}
+
+
+/*typedef struct rlDrawCall {
+  int mode;
+  int vertexCount;
+  int vertexAlignment;
+  unsigned int textureId;
+} rlDrawCall;*/
+DECLARE(void rlDrawCallINTO(
+  rlDrawCall *R,
+  int *mode,
+  int *vertexCount,
+  int *vertexAlignment)){
+  R->mode = *mode;
+  R->vertexCount = *vertexCount;
+  R->vertexAlignment = *vertexAlignment;
+}
+DECLARE(void rlDrawCallFROM(
+  rlDrawCall *R,
+  int *mode,
+  int *vertexCount,
+  int *vertexAlignment)){
+  *mode = R->mode;
+  *vertexCount = R->vertexCount;
+  *vertexAlignment = R->vertexAlignment;
+}
+
+
+/*typedef struct rlRenderBatch {
+  int bufferCount;
+  int currentBuffer;
+  rlVertexBuffer *vertexBuffer;
+  rlDrawCall *draws;
+  int drawCounter;
+  float currentDepth;
+} rlRenderBatch;*/
+DECLARE(void rlRenderBatchINTO(
+  rlRenderBatch *R,
+  int *bufferCount,
+  int *currentBuffer,
+  rlVertexBuffer **vertexBuffer,
+  rlDrawCall **draws,
+  int *drawCounter,
+  float *currentDepth)){
+  R->bufferCount = *bufferCount;
+  R->currentBuffer = *currentBuffer;
+  R->vertexBuffer = *vertexBuffer;
+  R->draws = *draws;
+  R->drawCounter = *drawCounter;
+  R->currentDepth = *currentDepth;
+}
+DECLARE(void rlRenderBatchFROM(
+  rlRenderBatch *R,
+  int *bufferCount,
+  int *currentBuffer,
+  rlVertexBuffer **vertexBuffer,
+  rlDrawCall **draws,
+  int *drawCounter,
+  float *currentDepth)){
+  *bufferCount = R->bufferCount;
+  *currentBuffer = R->currentBuffer;
+  *vertexBuffer = R->vertexBuffer;
+  *draws = R->draws;
+  *drawCounter = R->drawCounter;
+  *currentDepth = R->currentDepth;
+}
+
+/*typedef struct GuiStyleProp {
+  unsigned short controlId;
+  unsigned short propertyId;
+  int propertyValue;
+} GuiStyleProp;*/
+DECLARE(void GuiStylePropINTO(
+  GuiStyleProp *R,
+  unsigned short *controlId,
+  unsigned short *propertyId,
+  int *propertyValue)){
+  R->controlId = *controlId;
+  R->propertyId = *propertyId;
+  R->propertyValue = *propertyValue;
+}
+DECLARE(void GuiStylePropFROM(
+  GuiStyleProp *R,
+  unsigned short *controlId,
+  unsigned short *propertyId,
+  int *propertyValue)){
+  *controlId = R->controlId;
+  *propertyId = R->propertyId;
+  *propertyValue = R->propertyValue;
+}
+
+
+/*typedef struct Mat2 {
+  float m00;
+  float m01;
+  float m10;
+  float m11;
+} Mat2;*/
+DECLARE(void Mat2INTO(
+  Mat2 *R,
+  float *m00,
+  float *m01,
+  float *m10,
+  float *m11)){
+  R->m00 = *m00;
+  R->m01 = *m01;
+  R->m10 = *m10;
+  R->m11 = *m11;
+}
+DECLARE(void Mat2FROM(
+  Mat2 *R,
+  float *m00,
+  float *m01,
+  float *m10,
+  float *m11)){
+  *m00 = R->m00;
+  *m01 = R->m01;
+  *m10 = R->m10;
+  *m11 = R->m11;
+}
+
+
+/*typedef struct PolygonData {
+  unsigned int vertexCount;
+  Vector2 positions[PHYSAC_MAX_VERTICES];
+  Vector2 normals[PHYSAC_MAX_VERTICES];
+} PolygonData;*/
+DECLARE(void PolygonDataINTO(
+  PolygonData *R,
+  unsigned int *vertexCount,
+  Vector2 (*positions)[PHYSAC_MAX_VERTICES],
+  Vector2 (*normals)[PHYSAC_MAX_VERTICES])){
+  R->vertexCount = *vertexCount;
+  for(int i=0;i<PHYSAC_MAX_VERTICES;i++) R->positions[i] = (*positions)[i];
+  for(int i=0;i<PHYSAC_MAX_VERTICES;i++) R->normals[i] = (*normals)[i];
+}
+DECLARE(void PolygonDataFROM(
+  PolygonData *R,
+  unsigned int *vertexCount,
+  Vector2 (*positions)[PHYSAC_MAX_VERTICES],
+  Vector2 (*normals)[PHYSAC_MAX_VERTICES])){
+  *vertexCount = R->vertexCount;
+  for(int i=0;i<PHYSAC_MAX_VERTICES;i++) (*positions)[i] = R->positions[i];
+  for(int i=0;i<PHYSAC_MAX_VERTICES;i++) (*normals)[i] = R->normals[i];
+}
+
+
+/*typedef struct PhysicsShape {
+  PhysicsShapeType type;
+  PhysicsBody body;
+  float radius;
+  Mat2 transform;
+  PolygonData vertexData;
+} PhysicsShape;*/
+DECLARE(void PhysicsShapeINTO(
+  PhysicsShape *R,
+  PhysicsShapeType *type,
+  PhysicsBody *body,
+  float *radius,
+  Mat2 *transform,
+  PolygonData *vertexData)){
+  R->type = *type;
+  R->body = *body;
+  R->radius = *radius;
+  R->transform = *transform;
+  R->vertexData = *vertexData;
+}
+DECLARE(void PhysicsShapeFROM(
+  PhysicsShape *R,
+  PhysicsShapeType *type,
+  PhysicsBody *body,
+  float *radius,
+  Mat2 *transform,
+  PolygonData *vertexData)){
+  *type = R->type;
+  *body = R->body;
+  *radius = R->radius;
+  *transform = R->transform;
+  *vertexData = R->vertexData;
+}
+
+
+/*typedef struct PhysicsBodyData {
+  unsigned int id;
+  bool enabled;
+  Vector2 position;
+  Vector2 velocity;
+  Vector2 force;
+  float angularVelocity;
+  float torque;
+  float orient;
+  float inertia;
+  float inverseInertia;
+  float mass;
+  float inverseMass;
+  float staticFriction;
+  float dynamicFriction;
+  float restitution;
+  bool useGravity;
+  bool isGrounded;
+  bool freezeOrient;
+  PhysicsShape shape;
+} PhysicsBodyData;*/
+DECLARE(void PhysicsBodyDataINTO(
+  PhysicsBodyData *R,
+  unsigned int *id,
+  bool *enabled,
+  Vector2 *position,
+  Vector2 *velocity,
+  Vector2 *force,
+  float *angularVelocity,
+  float *torque,
+  float *orient,
+  float *inertia,
+  float *inverseInertia,
+  float *mass,
+  float *inverseMass,
+  float *staticFriction,
+  float *dynamicFriction,
+  float *restitution,
+  bool *useGravity,
+  bool *isGrounded,
+  bool *freezeOrient,
+  PhysicsShape *shape)){
+  R->id = *id;
+  R->enabled = *enabled;
+  R->position = *position;
+  R->velocity = *velocity;
+  R->force = *force;
+  R->angularVelocity = *angularVelocity;
+  R->torque = *torque;
+  R->orient = *orient;
+  R->inertia = *inertia;
+  R->inverseInertia = *inverseInertia;
+  R->mass = *mass;
+  R->inverseMass = *inverseMass;
+  R->staticFriction = *staticFriction;
+  R->dynamicFriction = *dynamicFriction;
+  R->restitution = *restitution;
+  R->useGravity = *useGravity;
+  R->isGrounded = *isGrounded;
+  R->freezeOrient = *freezeOrient;
+  R->shape = *shape;
+}
+DECLARE(void PhysicsBodyDataFROM(
+  PhysicsBodyData *R,
+  unsigned int *id,
+  bool *enabled,
+  Vector2 *position,
+  Vector2 *velocity,
+  Vector2 *force,
+  float *angularVelocity,
+  float *torque,
+  float *orient,
+  float *inertia,
+  float *inverseInertia,
+  float *mass,
+  float *inverseMass,
+  float *staticFriction,
+  float *dynamicFriction,
+  float *restitution,
+  bool *useGravity,
+  bool *isGrounded,
+  bool *freezeOrient,
+  PhysicsShape *shape)){
+  *id = R->id;
+  *enabled = R->enabled;
+  *position = R->position;
+  *velocity = R->velocity;
+  *force = R->force;
+  *angularVelocity = R->angularVelocity;
+  *torque = R->torque;
+  *orient = R->orient;
+  *inertia = R->inertia;
+  *inverseInertia = R->inverseInertia;
+  *mass = R->mass;
+  *inverseMass = R->inverseMass;
+  *staticFriction = R->staticFriction;
+  *dynamicFriction = R->dynamicFriction;
+  *restitution = R->restitution;
+  *useGravity = R->useGravity;
+  *isGrounded = R->isGrounded;
+  *freezeOrient = R->freezeOrient;
+  *shape = R->shape;
+}
+
+
+/*typedef struct PhysicsManifoldData {
+  unsigned int id;
+  PhysicsBody bodyA;
+  PhysicsBody bodyB;
+  float penetration;
+  Vector2 normal;
+  Vector2 contacts[2];
+  unsigned int contactsCount;
+  float restitution;
+  float dynamicFriction;
+  float staticFriction;
+} PhysicsManifoldData;*/
+DECLARE(void PhysicsManifoldDataINTO(
+  PhysicsManifoldData *R,
+  unsigned int *id,
+  PhysicsBody *bodyA,
+  PhysicsBody *bodyB,
+  float *penetration,
+  Vector2 *normal,
+  Vector2 (*contacts)[2],
+  unsigned int *contactsCount,
+  float *restitution,
+  float *dynamicFriction,
+  float *staticFriction)){
+  R->id = *id;
+  R->bodyA = *bodyA;
+  R->bodyB = *bodyB;
+  R->penetration = *penetration;
+  R->normal = *normal;
+  for(int i=0;i<2;i++) R->contacts[i] = (*contacts)[i];
+  R->contactsCount = *contactsCount;
+  R->restitution = *restitution;
+  R->dynamicFriction = *dynamicFriction;
+  R->staticFriction = *staticFriction;
+}
+DECLARE(void PhysicsManifoldDataFROM(
+  PhysicsManifoldData *R,
+  unsigned int *id,
+  PhysicsBody *bodyA,
+  PhysicsBody *bodyB,
+  float *penetration,
+  Vector2 *normal,
+  Vector2 (*contacts)[2],
+  unsigned int (*contactsCount),
+  float *restitution,
+  float *dynamicFriction,
+  float *staticFriction)){
+  *id = R->id;
+  *bodyA = R->bodyA;
+  *bodyB = R->bodyB;
+  *penetration = R->penetration;
+  *normal = R->normal;
+  for(int i=0;i<2;i++) (*contacts)[i] = R->contacts[i];
+  *contactsCount = R->contactsCount;
+  *restitution = R->restitution;
+  *dynamicFriction = R->dynamicFriction;
+  *staticFriction = R->staticFriction;
 }

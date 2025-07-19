@@ -1,18 +1,5 @@
 :Namespace convert
 ⎕io←0
-Assert ← {⍺←'assertion failure' ⋄ 0∊⍵:⍺ ⎕SIGNAL 8 ⋄ shy←0}
-CI ← { ⍝ ,⍣¯1 but better. CI = Concatinate Inverse
-  _←Assert 1 1≡≢∘⍴¨⍺⍵
-  _←Assert ⍺≤⍥≢⍵
-  _←Assert ⍺≡⍵↑⍨≢⍺
-  ⍵↓⍨≢⍺
-}
-CTI ← { ⍝ ,⍨⍣¯1 but better. CTI = Concatinate Tilda Inverse
-  _←Assert 1 1≡≢∘⍴¨⍺⍵
-  _←Assert ⍺≤⍥≢⍵
-  _←Assert ⍺≡⍵↑⍨-≢⍺
-  ⍵↓⍨-≢⍺
-}
 
 includes ← ⍬
 includes ,←⊂ '#define RAYGUI_IMPLEMENTATION'
@@ -33,6 +20,20 @@ functionsEnd ,←⊂ '#if defined(__cplusplus)'
 functionsEnd ,←⊂ ,'}'
 functionsEnd ,←⊂ '#endif'
 
+Assert ← {⍺←'assertion failure' ⋄ 0∊⍵:⍺ ⎕SIGNAL 8 ⋄ shy←0}
+CI ← { ⍝ ,⍣¯1 but better. CI = Concatinate Inverse
+  _←Assert 1 1≡≢∘⍴¨⍺⍵
+  _←Assert ⍺≤⍥≢⍵
+  _←Assert ⍺≡⍵↑⍨≢⍺
+  ⍵↓⍨≢⍺
+}
+CTI ← { ⍝ ,⍨⍣¯1 but better. CTI = Concatinate Tilda Inverse
+  _←Assert 1 1≡≢∘⍴¨⍺⍵
+  _←Assert ⍺≤⍥≢⍵
+  _←Assert ⍺≡⍵↑⍨-≢⍺
+  ⍵↓⍨-≢⍺
+}
+
 filterMacros ← {
   b←'#if defined(GRAPHICS_API_OPENGL_11)'∘≡¨⍵
   e←'#endif'∘≡¨⍵
@@ -41,24 +42,36 @@ filterMacros ← {
   ⍵/⍨~depth
 }
 
-(rgui physac rl rm rlgl) ← filterMacros¨ (⊃⍤⎕NGET 1,⍨⊂)¨'raygui.h' 'physac.h','../raylib-5.5/src/'∘,¨'raylib.h' 'raymath.h' 'rlgl.h'
+_Each_ ← {⍺←⊢ ⋄ 0≡≢⍵:⍵⍵ ⋄ ⍺ ⍺⍺¨⍵}
 
 ⍝ All struct names
-sp ← 'typedef struct ' ⍝ Struct prefix
-I ← {⍺←⊢⋄⍺ ⍺⍺⍣¯1⊢⍵}
+Names ← {
+  sp ← 'typedef struct ' ⍝ Struct prefix
+  I ← {⍺←⊢⋄⍺ ⍺⍺⍣¯1⊢⍵}
+  structsAndMore ← ⍵⊆⍨ +\(' {'∘≡¨¯2↑¨⍵) ∧ sp∘≡¨(≢sp)∘↑¨⍵
+  ' {'∘CTI _Each_ (0/⊂'')⊢ sp∘CI _Each_ (0/⊂'') ⊃¨structsAndMore
+}
 
-structsAndMore ← rl ⊆⍨ +\(' {'∘≡¨¯2↑¨rl) ∧ sp∘≡¨(≢sp)∘↑¨rl
-names ← ' {'∘CTI¨ sp∘CI¨ ⊃¨structsAndMore
+AddDecl ← {
+  p←'DECLARE('⋄s←')'
+  p∘,¨⍵/⍨¨1+<\¨s=⍵
+}
+⍝                                        /¯ Remove comments    ¯\
+(physac rl rm rlgl rgui) ← filterMacros¨{⍵/⍨0=+\'/*'-⍥(⍷∘⍵)⍥⊂'*/'}¨ (⊃⍤⎕NGET 1,⍨⊂)¨(⊂'raygui.h'),⍨(⊂'physac.h'),'../raylib-5.5/src/'∘,¨'raylib.h' 'raymath.h' 'rlgl.h'
+
+rm,¨←';'
+allLibs ← (physac rl rm rlgl rgui)
+allLibs ← allLibs /⍨¨ ~∨\¨functionsEnd∘⍷¨allLibs
+allFuncs ← allLibs {⍵∘CI¨⍺/⍨⍵∘≡¨⍺↑¨⍨≢⍵}¨' ',¨⍨'PHYSACDEF' 'RLAPI' 'RMAPI' 'RLAPI' 'RAYGUIAPI'
 
 ⍝ Sizeofs
-
-topCode ←,⊂'char *structNames[] = {','};',⍨ ⊃,/'"'∘,¨,∘'",'¨names
-topCode,← ⊂'int structSizes[] = {','};',⍨ ⊃,/'sizeof('∘,¨,∘'),'¨names
+topCode ←,⊂'char *structNames[] = {','};',⍨ ⊃,/'"'∘,¨,∘'",'¨⊃,/Names¨allLibs
+topCode,← ⊂'int structSizes[] = {','};',⍨ ⊃,/'sizeof('∘,¨,∘'),'¨⊃,/Names¨allLibs
 topCode,← ⊂''
 topCode,← ⊂'#include "IntoFrom.c"'
 topCode,← ⊂'#define DECLARE(x) RLAPI x; x'
 topCode,← ⊂''
-topCode,← ⊂'DECLARE(int StructCount()){return ',';}',⍨⍕≢names
+topCode,← ⊂'DECLARE(int StructCount()){return ',';}',⍨⍕≢⊃,/Names¨allLibs
 topCode,← ⊂'DECLARE(int GetStructSize(int index)){return structSizes[index];}'
 topCode,← ⊂'DECLARE(void GetStructName(char *retName, int strlen, int index)){'
 topCode,← ⊂'  for (int i=0;i<strlen;i++) {'
@@ -71,28 +84,8 @@ topCode,← ⊂'  int acc=0;'
 topCode,← ⊂'  while (name[acc] != ''\0'') acc++;'
 topCode,← ⊂'  return acc;'
 topCode,← ⊂,'}'
-topCode,← ⊂'DECLARE(void FloatToDouble(double *n1, float *n2)){'
-topCode,← ⊂'  *n1 = *n2;'
-topCode,← ⊂,'}'
-topCode,← ⊂'DECLARE(void DoubleToFloat(float *n1, double *n2)){'
-topCode,← ⊂'  *n1 = *n2;'
-topCode,← ⊂,'}'
 topCode,← ⊂'DECLARE(void memcpy2(void *x, void *y, size_t z)){memcpy(x,y,z);}'
 topCode,← ⊂'DECLARE(void strcpy2(void *x, void *y)){strcpy(x,y);}'
 
-physacFuncs  ←   physac {⍵CI¨⍺/⍨⍵≡¨10↑¨⍺} ⊂'PHYSACDEF '
-rayguiFuncs  ←     rgui {⍵CI¨⍺/⍨⍵≡¨10↑¨⍺} ⊂'RAYGUIAPI '
-raylibFuncs  ←       rl {⍵CI¨⍺/⍨⍵≡¨ 6↑¨⍺} ⊂'RLAPI '
-raymathFuncs ← ';',⍨¨rm {⍵CI¨⍺/⍨⍵≡¨ 6↑¨⍺} ⊂'RMAPI '
-
-⍝             /¯¯¯¯fixes bug in rl 5.0¯¯¯¯¯¯¯\
-rlglFuncs   ← (  rlgl/⍨~∨\functionsEnd⍷  rlgl) {⍵CI¨⍺/⍨⍵≡¨ 6↑¨⍺} ⊂'RLAPI '
-physacFuncs ← (physac/⍨~∨\functionsEnd⍷physac) {⍵CI¨⍺/⍨⍵≡¨10↑¨⍺} ⊂'PHYSACDEF '
-
-AddDecl ← {
-  p←'DECLARE('⋄s←')'
-  p∘,¨⍵/⍨¨1+<\¨s=⍵
-}
-
-declorations ← ('h,i'⎕R'h, i') (', \.\.\.\);'⎕R', void *args);')¨⊃,/(raylibFuncs raymathFuncs rlglFuncs rayguiFuncs)
+declorations ← ('h,i'⎕R'h, i')¨ (', \.\.\.\);'⎕R', void *args);')¨⊃,/allFuncs
 :EndNamespace

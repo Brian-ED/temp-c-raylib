@@ -5,13 +5,13 @@
 #define InitTimer InitTimerPhysac
 #include "physac.h"
 #define InitTimer InitTimer
-char *structNames[] = {"Vector2","Vector3","Vector4","Matrix","Color","Rectangle","Image","Texture","RenderTexture","NPatchInfo","GlyphInfo","Font","Camera3D","Camera2D","Mesh","Shader","MaterialMap","Material","Transform","BoneInfo","Model","ModelAnimation","Ray","RayCollision","BoundingBox","Wave","AudioStream","Sound","Music","VrDeviceInfo","VrStereoConfig","FilePathList","AutomationEvent","AutomationEventList",};
-int structSizes[] = {sizeof(Vector2),sizeof(Vector3),sizeof(Vector4),sizeof(Matrix),sizeof(Color),sizeof(Rectangle),sizeof(Image),sizeof(Texture),sizeof(RenderTexture),sizeof(NPatchInfo),sizeof(GlyphInfo),sizeof(Font),sizeof(Camera3D),sizeof(Camera2D),sizeof(Mesh),sizeof(Shader),sizeof(MaterialMap),sizeof(Material),sizeof(Transform),sizeof(BoneInfo),sizeof(Model),sizeof(ModelAnimation),sizeof(Ray),sizeof(RayCollision),sizeof(BoundingBox),sizeof(Wave),sizeof(AudioStream),sizeof(Sound),sizeof(Music),sizeof(VrDeviceInfo),sizeof(VrStereoConfig),sizeof(FilePathList),sizeof(AutomationEvent),sizeof(AutomationEventList),};
+char *structNames[] = {"Mat2","PolygonData","PhysicsShape","PhysicsBodyData","PhysicsManifoldData","Vector2","Vector3","Vector4","Matrix","Color","Rectangle","Image","Texture","RenderTexture","NPatchInfo","GlyphInfo","Font","Camera3D","Camera2D","Mesh","Shader","MaterialMap","Material","Transform","BoneInfo","Model","ModelAnimation","Ray","RayCollision","BoundingBox","Wave","AudioStream","Sound","Music","VrDeviceInfo","VrStereoConfig","FilePathList","AutomationEvent","AutomationEventList","Matrix","rlVertexBuffer","rlDrawCall","rlRenderBatch","GuiStyleProp",};
+int structSizes[] = {sizeof(Mat2),sizeof(PolygonData),sizeof(PhysicsShape),sizeof(PhysicsBodyData),sizeof(PhysicsManifoldData),sizeof(Vector2),sizeof(Vector3),sizeof(Vector4),sizeof(Matrix),sizeof(Color),sizeof(Rectangle),sizeof(Image),sizeof(Texture),sizeof(RenderTexture),sizeof(NPatchInfo),sizeof(GlyphInfo),sizeof(Font),sizeof(Camera3D),sizeof(Camera2D),sizeof(Mesh),sizeof(Shader),sizeof(MaterialMap),sizeof(Material),sizeof(Transform),sizeof(BoneInfo),sizeof(Model),sizeof(ModelAnimation),sizeof(Ray),sizeof(RayCollision),sizeof(BoundingBox),sizeof(Wave),sizeof(AudioStream),sizeof(Sound),sizeof(Music),sizeof(VrDeviceInfo),sizeof(VrStereoConfig),sizeof(FilePathList),sizeof(AutomationEvent),sizeof(AutomationEventList),sizeof(Matrix),sizeof(rlVertexBuffer),sizeof(rlDrawCall),sizeof(rlRenderBatch),sizeof(GuiStyleProp),};
 
 #include "IntoFrom.c"
 #define DECLARE(x) RLAPI x; x
 
-DECLARE(int StructCount()){return 34;}
+DECLARE(int StructCount()){return 44;}
 DECLARE(int GetStructSize(int index)){return structSizes[index];}
 DECLARE(void GetStructName(char *retName, int strlen, int index)){
   for (int i=0;i<strlen;i++) {
@@ -24,14 +24,27 @@ DECLARE(int GetStructNameLength(int index)){
   while (name[acc] != '\0') acc++;
   return acc;
 }
-DECLARE(void FloatToDouble(double *n1, float *n2)){
-  *n1 = *n2;
-}
-DECLARE(void DoubleToFloat(float *n1, double *n2)){
-  *n1 = *n2;
-}
 DECLARE(void memcpy2(void *x, void *y, size_t z)){memcpy(x,y,z);}
 DECLARE(void strcpy2(void *x, void *y)){strcpy(x,y);}
+DECLARE(void InitPhysicsRetPtr()){InitPhysics();}                                                                           // Initializes physics values, pointers and creates physics loop thread
+DECLARE(void RunPhysicsStepRetPtr()){RunPhysicsStep();}                                                                        // Run physics step, to be used if PHYSICS_NO_THREADS is set in your main loop
+DECLARE(void SetPhysicsTimeStepRetPtr(double *delta)){SetPhysicsTimeStep(*delta);}                                                            // Sets physics fixed time step in milliseconds. 1.666666 by default
+DECLARE(void IsPhysicsEnabledRetPtr(bool *ret)){*ret=IsPhysicsEnabled();}                                                                      // Returns true if physics thread is currently enabled
+DECLARE(void SetPhysicsGravityRetPtr(float *x,  float *y)){SetPhysicsGravity(*x, *y);}                                                         // Sets physics global gravity force
+DECLARE(void CreatePhysicsBodyCircleRetPtr(PhysicsBody *ret, Vector2 *pos,  float *radius,  float *density)){*ret=CreatePhysicsBodyCircle(*pos, *radius, *density);}                    // Creates a new circle physics body with generic parameters
+DECLARE(void CreatePhysicsBodyRectangleRetPtr(PhysicsBody *ret, Vector2 *pos,  float *width,  float *height,  float *density)){*ret=CreatePhysicsBodyRectangle(*pos, *width, *height, *density);}    // Creates a new rectangle physics body with generic parameters
+DECLARE(void CreatePhysicsBodyPolygonRetPtr(PhysicsBody *ret, Vector2 *pos,  float *radius,  int *sides,  float *density)){*ret=CreatePhysicsBodyPolygon(*pos, *radius, *sides, *density);}        // Creates a new polygon physics body with generic parameters
+DECLARE(void PhysicsAddForceRetPtr(PhysicsBody *body,  Vector2 *force)){PhysicsAddForce(*body, *force);}                                            // Adds a force to a physics body
+DECLARE(void PhysicsAddTorqueRetPtr(PhysicsBody *body,  float *amount)){PhysicsAddTorque(*body, *amount);}                                            // Adds an angular force to a physics body
+DECLARE(void PhysicsShatterRetPtr(PhysicsBody *body,  Vector2 *position,  float *force)){PhysicsShatter(*body, *position, *force);}                             // Shatters a polygon shape physics body to little physics bodies with explosion force
+DECLARE(void GetPhysicsBodiesCountRetPtr(int *ret)){*ret=GetPhysicsBodiesCount();}                                                                  // Returns the current amount of created physics bodies
+DECLARE(void GetPhysicsBodyRetPtr(PhysicsBody *ret, int *index)){*ret=GetPhysicsBody(*index);}                                                            // Returns a physics body of the bodies pool at a specific index
+DECLARE(void GetPhysicsShapeTypeRetPtr(int *ret, int *index)){*ret=GetPhysicsShapeType(*index);}                                                               // Returns the physics body shape type (PHYSICS_CIRCLE or PHYSICS_POLYGON)
+DECLARE(void GetPhysicsShapeVerticesCountRetPtr(int *ret, int *index)){*ret=GetPhysicsShapeVerticesCount(*index);}                                                      // Returns the amount of vertices of a physics body shape
+DECLARE(void GetPhysicsShapeVertexRetPtr(Vector2 *ret, PhysicsBody *body,  int *vertex)){*ret=GetPhysicsShapeVertex(*body, *vertex);}                                      // Returns transformed position of a body shape (body position + vertex transformed position)
+DECLARE(void SetPhysicsBodyRotationRetPtr(PhysicsBody *body,  float *radians)){SetPhysicsBodyRotation(*body, *radians);}                                     // Sets physics body shape transform based on radians parameter
+DECLARE(void DestroyPhysicsBodyRetPtr(PhysicsBody *body)){DestroyPhysicsBody(*body);}                                                        // Unitializes and destroy a physics body
+DECLARE(void ClosePhysicsRetPtr()){ClosePhysics();}                                                                          // Unitializes physics pointers and closes physics loop thread
 DECLARE(void InitWindowRetPtr(int *width,  int *height,  const char **title)){InitWindow(*width, *height, *title);}  // Initialize window and OpenGL context
 DECLARE(void CloseWindowRetPtr()){CloseWindow();}                                     // Close window and unload OpenGL context
 DECLARE(void WindowShouldCloseRetPtr(bool *ret)){*ret=WindowShouldClose();}                               // Check if application should close (KEY_ESCAPE pressed or windows close icon clicked)
