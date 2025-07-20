@@ -27,12 +27,12 @@
   };
 in lib.checkListOfEnum "${pname}: platform"
   [ # Basically no testing has been done yet
-    "DESKTOP_GLFW"
-    "DESKTOP_SDL"
-    "DESKTOP_RGFW"
-    "WEB" # Web assembly
-    "DRM" # Raspberry pi
-    "ANDROID"
+    "Desktop"
+    "Web"
+    "Android"
+    "Raspberry Pi"
+    "DRM"
+    "SDL"
   ]
   [ platform ] # Note that "Web", "Android" and "Raspberry Pi" do not currently work
 ( stdenv.mkDerivation (finalAttrs: {
