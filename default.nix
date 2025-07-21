@@ -11,7 +11,7 @@
   libGLU,
   libX11,
   curl, # Non-raylib
-  platform ? "DESKTOP_GLFW",
+  platform ? "Desktop",
   pulseSupport ? stdenv.hostPlatform.isLinux,
   alsaSupport ? false,
   sharedLib ? true,
@@ -45,7 +45,7 @@ in lib.checkListOfEnum "${pname}: platform"
     curl cmake
   ] ++ optional (builtins.length finalAttrs.appendRunpaths > 0) autoPatchelfHook;
 
-  buildInputs = optional (platform == "DESKTOP_GLFW") glfw ++ optional (platform == "SDL") SDL2;
+  buildInputs = optional (platform == "Desktop") glfw ++ optional (platform == "SDL") SDL2;
   propagatedBuildInputs = lib.optionals stdenv.hostPlatform.isLinux [
     libGLU
     libX11
@@ -85,7 +85,7 @@ in lib.checkListOfEnum "${pname}: platform"
       "-DPLATFORM=${platform}"
       "-DBUILD_EXAMPLES=OFF"
     ]
-    ++ optional (platform == "DESKTOP_GLFW") "-DUSE_EXTERNAL_GLFW=ON"
+    ++ optional (platform == "Desktop") "-DUSE_EXTERNAL_GLFW=ON"
     ++ optional includeEverything "-DINCLUDE_EVERYTHING=ON"
     ++ optional sharedLib "-DBUILD_SHARED_LIBS=ON";
 

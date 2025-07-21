@@ -12,7 +12,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
       callPackage = pkgs.lib.callPackageWith ((pkgs.lib.attrsets.unionOfDisjoint pkgs pkgs.xorg) // packages);
       packages = {
-        default = callPackage ./default.nix {platform = "SDL";};
+        default = callPackage ./default.nix {};
       };
     in {
       inherit packages;
