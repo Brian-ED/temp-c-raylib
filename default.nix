@@ -2,7 +2,6 @@
   stdenv,
   lib,
   fetchFromGitHub,
-  cmake,
   autoPatchelfHook,
   glfw,
   SDL2,
@@ -10,7 +9,6 @@
   libpulseaudio,
   libGLU,
   libX11,
-  curl, # Non-raylib
   platform ? "Desktop",
   pulseSupport ? stdenv.hostPlatform.isLinux,
   alsaSupport ? false,
@@ -41,9 +39,7 @@ in lib.checkListOfEnum "${pname}: platform"
   src = ./.;
 
   # autoPatchelfHook is needed for appendRunpaths
-  nativeBuildInputs = [
-    curl cmake
-  ] ++ optional (builtins.length finalAttrs.appendRunpaths > 0) autoPatchelfHook;
+  nativeBuildInputs = optional (builtins.length finalAttrs.appendRunpaths > 0) autoPatchelfHook;
 
   buildInputs = optional (platform == "Desktop") glfw ++ optional (platform == "SDL") SDL2;
   propagatedBuildInputs = lib.optionals stdenv.hostPlatform.isLinux [
