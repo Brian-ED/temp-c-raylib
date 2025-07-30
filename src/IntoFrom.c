@@ -1513,3 +1513,33 @@ DECLARE(void PhysicsManifoldDataFROM(
   *dynamicFriction = R->dynamicFriction;
   *staticFriction = R->staticFriction;
 }
+
+
+/*typedef struct float3 {
+  float v[3];
+} float3;*/
+DECLARE(void float3INTO(
+  float3 *R,
+  float (*v)[3])){
+  for(int i=0;i<3;i++) R->v[i] = (*v)[i];
+}
+DECLARE(void float3FROM(
+  float3 *R,
+  float (*v)[3])){
+  for(int i=0;i<3;i++) (*v)[i] = R->v[i];
+}
+
+
+/*typedef struct float16 {
+  float v[16];
+} float16;*/
+DECLARE(void float16INTO(
+  float16 *R,
+  float (*v)[16])){
+  for(int i=0;i<16;i++) R->v[i] = (*v)[i];
+}
+DECLARE(void float16FROM(
+  float16 *R,
+  float (*v)[16])){
+  for(int i=0;i<16;i++) (*v)[i] = R->v[i];
+}
