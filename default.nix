@@ -9,6 +9,7 @@
   libpulseaudio,
   libGLU,
   libX11,
+  cmake,
   platform ? "Desktop",
   pulseSupport ? stdenv.hostPlatform.isLinux,
   alsaSupport ? false,
@@ -35,11 +36,11 @@ in lib.checkListOfEnum "${pname}: platform"
   [ platform ] # Note that "Web", "Android" and "Raspberry Pi" do not currently work
 ( stdenv.mkDerivation (finalAttrs: {
   inherit pname;
-  version = "4.0.0";
+  version = "rolling";
   src = ./.;
 
   # autoPatchelfHook is needed for appendRunpaths
-  nativeBuildInputs = optional (builtins.length finalAttrs.appendRunpaths > 0) autoPatchelfHook;
+  nativeBuildInputs = [ cmake ] ++ optional (builtins.length finalAttrs.appendRunpaths > 0) autoPatchelfHook;
 
   buildInputs = optional (platform == "Desktop") glfw ++ optional (platform == "SDL") SDL2;
   propagatedBuildInputs = lib.optionals stdenv.hostPlatform.isLinux [
