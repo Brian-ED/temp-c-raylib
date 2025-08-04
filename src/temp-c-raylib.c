@@ -5,13 +5,13 @@
 #define InitTimer InitTimerPhysac
 #include "physac.h"
 #define InitTimer InitTimer
-char *structNames[] = {"Mat2","PolygonData","PhysicsShape","PhysicsBodyData","PhysicsManifoldData","Vector2","Vector3","Vector4","Matrix","Color","Rectangle","Image","Texture","RenderTexture","NPatchInfo","GlyphInfo","Font","Camera3D","Camera2D","Mesh","Shader","MaterialMap","Material","Transform","BoneInfo","Model","ModelAnimation","Ray","RayCollision","BoundingBox","Wave","AudioStream","Sound","Music","VrDeviceInfo","VrStereoConfig","FilePathList","AutomationEvent","AutomationEventList","Matrix","rlVertexBuffer","rlDrawCall","rlRenderBatch","GuiStyleProp",};
-int structSizes[] = {sizeof(Mat2),sizeof(PolygonData),sizeof(PhysicsShape),sizeof(PhysicsBodyData),sizeof(PhysicsManifoldData),sizeof(Vector2),sizeof(Vector3),sizeof(Vector4),sizeof(Matrix),sizeof(Color),sizeof(Rectangle),sizeof(Image),sizeof(Texture),sizeof(RenderTexture),sizeof(NPatchInfo),sizeof(GlyphInfo),sizeof(Font),sizeof(Camera3D),sizeof(Camera2D),sizeof(Mesh),sizeof(Shader),sizeof(MaterialMap),sizeof(Material),sizeof(Transform),sizeof(BoneInfo),sizeof(Model),sizeof(ModelAnimation),sizeof(Ray),sizeof(RayCollision),sizeof(BoundingBox),sizeof(Wave),sizeof(AudioStream),sizeof(Sound),sizeof(Music),sizeof(VrDeviceInfo),sizeof(VrStereoConfig),sizeof(FilePathList),sizeof(AutomationEvent),sizeof(AutomationEventList),sizeof(Matrix),sizeof(rlVertexBuffer),sizeof(rlDrawCall),sizeof(rlRenderBatch),sizeof(GuiStyleProp),};
+char *structNames[] = {"Mat2","PolygonData","PhysicsShape","PhysicsBodyData","PhysicsManifoldData","Vector2","Vector3","Vector4","Matrix","Color","Rectangle","Image","Texture","RenderTexture","NPatchInfo","GlyphInfo","Font","Camera3D","Camera2D","Mesh","Shader","MaterialMap","Material","Transform","BoneInfo","Model","ModelAnimation","Ray","RayCollision","BoundingBox","Wave","AudioStream","Sound","Music","VrDeviceInfo","VrStereoConfig","FilePathList","AutomationEvent","AutomationEventList","float3","float16","rlVertexBuffer","rlDrawCall","rlRenderBatch","GuiStyleProp",};
+int structSizes[] = {sizeof(Mat2),sizeof(PolygonData),sizeof(PhysicsShape),sizeof(PhysicsBodyData),sizeof(PhysicsManifoldData),sizeof(Vector2),sizeof(Vector3),sizeof(Vector4),sizeof(Matrix),sizeof(Color),sizeof(Rectangle),sizeof(Image),sizeof(Texture),sizeof(RenderTexture),sizeof(NPatchInfo),sizeof(GlyphInfo),sizeof(Font),sizeof(Camera3D),sizeof(Camera2D),sizeof(Mesh),sizeof(Shader),sizeof(MaterialMap),sizeof(Material),sizeof(Transform),sizeof(BoneInfo),sizeof(Model),sizeof(ModelAnimation),sizeof(Ray),sizeof(RayCollision),sizeof(BoundingBox),sizeof(Wave),sizeof(AudioStream),sizeof(Sound),sizeof(Music),sizeof(VrDeviceInfo),sizeof(VrStereoConfig),sizeof(FilePathList),sizeof(AutomationEvent),sizeof(AutomationEventList),sizeof(float3),sizeof(float16),sizeof(rlVertexBuffer),sizeof(rlDrawCall),sizeof(rlRenderBatch),sizeof(GuiStyleProp),};
 
 #include "IntoFrom.c"
 #define DECLARE(x) RLAPI x; x
 
-DECLARE(int StructCount()){return 44;}
+DECLARE(int StructCount()){return 45;}
 DECLARE(int GetStructSize(int index)){return structSizes[index];}
 DECLARE(void GetStructName(char *retName, int strlen, int index)){
   for (int i=0;i<strlen;i++) {

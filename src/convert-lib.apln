@@ -59,19 +59,21 @@ AddDecl ← {
 ⍝                                        /¯ Remove comments    ¯\
 (physac rl rm rlgl rgui) ← filterMacros¨{⍵/⍨0=+\'/*'-⍥(⍷∘⍵)⍥⊂'*/'}¨ (⊃⍤⎕NGET 1,⍨⊂)¨(⊂'raygui.h'),⍨(⊂'physac.h'),'../raylib-5.5/src/'∘,¨'raylib.h' 'raymath.h' 'rlgl.h'
 
-rm,¨←';'
+((')'=(⊃⌽)¨rm)/rm),←';'
 allLibs ← (physac rl rm rlgl rgui)
 allLibs ← allLibs /⍨¨ ~∨\¨functionsEnd∘⍷¨allLibs
 allFuncs ← allLibs {⍵∘CI¨⍺/⍨⍵∘≡¨⍺↑¨⍨≢⍵}¨' ',¨⍨'PHYSACDEF' 'RLAPI' 'RMAPI' 'RLAPI' 'RAYGUIAPI'
 
+structs ← ∪⊃,/Names¨allLibs
+
 ⍝ Sizeofs
-topCode ←,⊂'char *structNames[] = {','};',⍨ ⊃,/'"'∘,¨,∘'",'¨⊃,/Names¨allLibs
-topCode,← ⊂'int structSizes[] = {','};',⍨ ⊃,/'sizeof('∘,¨,∘'),'¨⊃,/Names¨allLibs
+topCode ←,⊂'char *structNames[] = {','};',⍨ ⊃,/'"'∘,¨,∘'",'¨structs
+topCode,← ⊂'int structSizes[] = {','};',⍨ ⊃,/'sizeof('∘,¨,∘'),'¨structs
 topCode,← ⊂''
 topCode,← ⊂'#include "IntoFrom.c"'
 topCode,← ⊂'#define DECLARE(x) RLAPI x; x'
 topCode,← ⊂''
-topCode,← ⊂'DECLARE(int StructCount()){return ',';}',⍨⍕≢⊃,/Names¨allLibs
+topCode,← ⊂'DECLARE(int StructCount()){return ',';}',⍨⍕≢structs
 topCode,← ⊂'DECLARE(int GetStructSize(int index)){return structSizes[index];}'
 topCode,← ⊂'DECLARE(void GetStructName(char *retName, int strlen, int index)){'
 topCode,← ⊂'  for (int i=0;i<strlen;i++) {'
