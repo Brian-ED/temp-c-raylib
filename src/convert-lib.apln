@@ -74,6 +74,7 @@ topCode,← ⊂'#include "IntoFrom.c"'
 topCode,← ⊂'#define DECLARE(x) RLAPI x; x'
 topCode,← ⊂''
 topCode,← ⊂'DECLARE(int StructCount()){return ',';}',⍨⍕≢structs
+topCode,← ⊂'DECLARE(void *MovePtr(void *ptr, int offset)){ return ((char *)ptr) + offset; }'
 topCode,← ⊂'DECLARE(int GetStructSize(int index)){return structSizes[index];}'
 topCode,← ⊂'DECLARE(void GetStructName(char *retName, int strlen, int index)){'
 topCode,← ⊂'  for (int i=0;i<strlen;i++) {'

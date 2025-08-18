@@ -12,6 +12,7 @@ int structSizes[] = {sizeof(Mat2),sizeof(PolygonData),sizeof(PhysicsShape),sizeo
 #define DECLARE(x) RLAPI x; x
 
 DECLARE(int StructCount()){return 45;}
+DECLARE(void *MovePtr(void *ptr, int offset)){ return ((char *)ptr) + offset; }
 DECLARE(int GetStructSize(int index)){return structSizes[index];}
 DECLARE(void GetStructName(char *retName, int strlen, int index)){
   for (int i=0;i<strlen;i++) {
