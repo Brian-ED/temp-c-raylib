@@ -17,3 +17,6 @@ raylib-source.zip
 
 # Cache
 .zig-cache
+
+# Nix
+/result
