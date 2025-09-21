@@ -36,7 +36,7 @@ in lib.checkListOfEnum "${pname}: platform"
   [ platform ] # Note that "Web", "Android" and "Raspberry Pi" do not currently work
 ( stdenv.mkDerivation (finalAttrs: {
   inherit pname;
-  version = "rolling";
+  version = "v${lib.removeSuffix "\n" (builtins.readFile ./VERSION)}";
   src = ./.;
 
   # autoPatchelfHook is needed for appendRunpaths
