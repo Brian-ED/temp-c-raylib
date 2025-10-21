@@ -66,12 +66,6 @@ in lib.checkListOfEnum "${pname}: platform"
     echo `ls build/raylib-source/src`
   '';
 
-  fixupPhase = ''
-    rm $out/lib/libraylib.so
-    mv $out/lib/libraylib.so.*.* $out/lib/libtemp-c-raylib.so
-    rm $out/lib/libraylib.so.*
-  '';
-
   cmakeDir = "raylib-source";
 
   appendRunpaths = optional stdenv.hostPlatform.isLinux (
