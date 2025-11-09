@@ -15,7 +15,7 @@ on:
 
 jobs:
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v4
     
@@ -131,7 +131,7 @@ jobs:
 
   create-release:
     needs: [build-linux, build-macos, build-windows]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: github.event.inputs.create_release == 'true'
     steps:
     - uses: actions/checkout@v4
