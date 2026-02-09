@@ -27,8 +27,9 @@ jobs:
     - name: Install Dyalog APL
       run: |
         # Download Dyalog APL for Linux
-        curl -L "https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=19.0/linux_64_19.0.50027_unicode.x86_64.deb" -o dyalog.deb
-        sudo apt-get install -y ./dyalog.deb
+        DEBFILE=`curl -o - -s https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=docker.metafile | grep x86_64 | awk -v v="20.0" '$0~v && /deb/ {print $3}'` ;\
+        curl -o /tmp/dyalog.deb ${DEBFILE}
+        sudo apt-get install -y /tmp/dyalog.deb
 
     - name: Build raylib
       run: |
@@ -57,9 +58,10 @@ jobs:
       run: |
         # Detect architecture
         if [[ $(uname -m) == "arm64" ]]; then
-          DYALOG_URL="https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=19.0/macarm_64_19.0.50027_unicode.pkg"
+          DYALOG_URL="https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=20.0/macarm_64_20.0.52760_unicode.pkg"
         else
-          DYALOG_URL="https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=19.0/mac_64_19.0.50027_unicode.pkg"
+          echo "Error: Only arm64 Mac supported" >&2
+          exit 1
         fi
         
         # Download and install Dyalog APL
@@ -98,7 +100,7 @@ jobs:
     - name: Install Dyalog APL
       run: |
         REM Download Dyalog APL for Windows
-        curl https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=19.0/windows_64_19.0.50074_unicode.zip -o dyalog.zip
+        curl https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=20.0/windows_64_20.0.52751_unicode.zip -o dyalog.zip
         
         REM Create directory and extract the archive
         mkdir dyalog
@@ -111,9 +113,6 @@ jobs:
         
         REM Install Dyalog APL
         msiexec /i setup_64_unicode.msi /quiet /norestart ACCEPT_LICENSE=YES
-
-        REM Fix dyalogscript.ps1 (remove last 2 lines)
-        powershell -c "Get-Content 'C:\Program Files\Dyalog\Dyalog APL-64 19.0 Unicode\scriptbin\dyalogscript.ps1' | Select-Object -SkipLast 2 | Set-Content 'C:\Program Files\Dyalog\Dyalog APL-64 19.0 Unicode\scriptbin\dyalogscript2.ps1'"
       shell: cmd
     
     - name: Build raylib
