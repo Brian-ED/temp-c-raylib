@@ -1091,7 +1091,7 @@ DECLARE(void AutomationEventFROM(
   int (*params)[4])){
   *frame = R->frame;
   *type = R->type;
-  for(int i=0;i<2;i++) (*params)[i] = R->params[i];
+  for(int i=0;i<4;i++) (*params)[i] = R->params[i];
 }
 
 
@@ -1139,7 +1139,7 @@ DECLARE(void rlVertexBufferINTO(
   unsigned char **colors,
   unsigned int **indices,
   unsigned int *vaoId,
-  unsigned int (*vboId)[4])){
+  unsigned int (*vboId)[5])){
   R->elementCount = *elementCount;
   R->vertices = *vertices;
   R->texcoords = *texcoords;
@@ -1147,7 +1147,7 @@ DECLARE(void rlVertexBufferINTO(
   R->colors = *colors;
   R->indices = *indices;
   R->vaoId = *vaoId;
-  for(int i=0;i<4;i++)R->vboId[i] = (*vboId)[i];
+  for(int i=0;i<5;i++)R->vboId[i] = (*vboId)[i];
 }
 DECLARE(void rlVertexBufferFROM(
   rlVertexBuffer *R,
@@ -1158,7 +1158,7 @@ DECLARE(void rlVertexBufferFROM(
   unsigned char **colors,
   unsigned int **indices,
   unsigned int *vaoId,
-  unsigned int (*vboId)[4])){
+  unsigned int (*vboId)[5])){
   *elementCount = R->elementCount;
   *vertices = R->vertices;
   *texcoords = R->texcoords;
@@ -1166,7 +1166,7 @@ DECLARE(void rlVertexBufferFROM(
   *colors = R->colors;
   *indices = R->indices;
   *vaoId = R->vaoId;
-  for(int i=0;i<4;i++) (*vboId)[i] = R->vboId[i];
+  for(int i=0;i<5;i++) (*vboId)[i] = R->vboId[i];
 }
 
 
