@@ -28,3 +28,6 @@ The workflow includes:
 The workflow automatically downloads and installs Dyalog APL on each platform.
 
 The APL conversion scripts (`convert_pointerArgs.apls`) run properly during the build process to generate the necessary C code.
+
+# Credit
+Credit to [0xAdk](https://github.com/0xAdk) for help with autogenerating struct conversion functions in `IntoFrom.c`.
